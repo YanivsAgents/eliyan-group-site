@@ -299,7 +299,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="navlinks">
       <a href="#services">Services</a><a href="#why">Why Eliyan</a><a href="#work">Our Work</a><a href="#areas">Service Area</a><a href="#about">About</a><a href="#faq">FAQ</a>
     </div>
-    <a class="navcall" href="tel:+17860000000"><small>Call or text</small>(786) 000-0000</a>
+    <a class="navcall" href="tel:+12136720727"><small>Call or text</small>(213) 672-0727</a>
     <button class="burger" aria-label="Menu" onclick="document.getElementById('mm').classList.toggle('open')"><span></span><span></span><span></span></button>
   </div>
   <div class="mobilemenu" id="mm">
@@ -330,8 +330,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="note">Takes less than 2 minutes · Response within 24 hours</div>
       <div class="row2">
         <div>
-          <label>First name <b>*</b></label>
-          <input type="text" name="first_name" placeholder="Your first name" required>
+          <label>Full name <b>*</b></label>
+          <input type="text" name="fullName" placeholder="Your full name" required>
         </div>
         <div>
           <label>Phone <b>*</b></label>
@@ -355,6 +355,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </select>
         </div>
         <div>
+          <label>Home or business? <b>*</b></label>
+          <select name="type" required>
+            <option value="">Select one</option>
+            <option>Home</option>
+            <option>Business</option>
+          </select>
+        </div>
+      </div>
+      <div class="row2">
+        <div>
           <label>City <b>*</b></label>
           <select name="city" required>
             <option value="">Select your area</option>
@@ -362,6 +372,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <option>Aventura</option><option>Fort Lauderdale</option><option>Boca Raton</option>
             <option>Delray Beach</option><option>Other South Florida</option>
           </select>
+        </div>
+        <div>
+          <label>Zip code <b>*</b></label>
+          <input type="text" name="zip" placeholder="33134" required inputmode="numeric" pattern="[0-9]{5}" maxlength="5">
         </div>
       </div>
       <label>How soon are you looking to get started?</label>
@@ -380,7 +394,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       <button class="btn" type="submit">Get My Free Quote →</button>
       <div class="under">🔒 Your information is never shared.</div>
-      <a class="call" href="tel:+17860000000">or call / text us: (786) 000-0000</a>
+      <a class="call" href="tel:+12136720727">or call / text us: (213) 672-0727</a>
     </form>
   </div>
 </header>
@@ -701,7 +715,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div>
       <div class="logo" style="margin-bottom:14px"><span class="len" style="color:#fff">ELIYAN</span><span class="grp">Group</span></div>
       <p>Premium concrete, asphalt and masonry for South Florida homes and businesses. Designed, built and finished by one in-house team.</p>
-      <p style="margin-top:14px">📞 Call or text (786) 000-0000<br>Licensed &amp; Insured · FL License #TBD</p>
+      <p style="margin-top:14px">📞 Call or text (213) 672-0727<br>Licensed &amp; Insured</p>
     </div>
     <div>
       <h4>Concrete</h4>
@@ -720,7 +734,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </footer>
 
 <div class="mbar">
-  <a class="mcall" href="tel:+17860000000">📞 Call or Text</a>
+  <a class="mcall" href="tel:+12136720727">📞 Call or Text</a>
   <a class="mquote" href="#quote">Get Free Quote</a>
 </div>
 
@@ -738,7 +752,7 @@ document.getElementById('quote').addEventListener('submit',async function(e){
       await fetch(hook,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
       f.innerHTML='<h3>Thank you! ✓</h3><div class="note" style="margin-top:8px">Your request is in. A real person will call or text you within 24 hours to book your free assessment.</div>';
     }catch(err){
-      alert('Something went wrong sending your request. Please call or text us at (786) 000-0000.');
+      alert('Something went wrong sending your request. Please call or text us at (213) 672-0727.');
     }
   }else{
     f.innerHTML='<h3>Thank you! ✓</h3><div class="note" style="margin-top:8px">Your request is in. A real person will call or text you within 24 hours to book your free assessment.</div><div class="note" style="color:#a33">[DEV NOTE: webhook not connected yet]</div>';
