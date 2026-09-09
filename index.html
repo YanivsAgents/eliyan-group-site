@@ -11,6 +11,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- End Google Tag Manager -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Concrete, Asphalt &amp; Masonry Contractor South Florida | Eliyan Group</title>
+<link rel="preconnect" href="https://api.leadconnectorhq.com">
+<link rel="preconnect" href="https://link.msgsndr.com">
 <meta name="description" content="Premium concrete driveways, pool patios, pavers, asphalt and masonry, built in-house from Coral Gables to Delray Beach. Written itemized quotes, 24-hour response. Get your free assessment.">
 <link rel="canonical" href="https://www.eliyangroup.com/">
 <meta property="og:title" content="Eliyan Group | Concrete, Asphalt &amp; Masonry, Built In-House">
@@ -278,6 +280,28 @@ footer li{list-style:none;padding:4px 0}
 .fbottom{border-top:1px solid rgba(255,255,255,.12);margin-top:44px;padding:22px 24px 0;text-align:center;font-size:12px;color:#8b8f7d}
 
 /* sticky mobile bar */
+/* ===== Booking (GHL calendar) ===== */
+.navbook{display:inline-block;background:var(--bronze);color:#fff;font-weight:600;font-size:14px;padding:11px 20px;border-radius:2px;letter-spacing:.02em;white-space:nowrap;transition:background .2s}
+.navbook:hover{background:var(--bronze-dark)}
+@media(max-width:960px){.navbook{display:none}}
+.mobilemenu .mmbook{background:var(--bronze);color:#fff;text-align:center;font-weight:600;border-radius:2px;margin-top:6px}
+.bkmodal{position:fixed;inset:0;z-index:500;background:rgba(20,26,17,.86);display:none;align-items:center;justify-content:center;padding:16px;-webkit-overflow-scrolling:touch}
+.bkmodal.open{display:flex}
+.bkbox{position:relative;width:100%;max-width:960px;max-height:calc(100vh - 32px);background:var(--white);border-radius:6px;box-shadow:0 30px 70px rgba(12,16,10,.5);display:flex;flex-direction:column;overflow:hidden}
+.bkhead{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:22px 26px 14px;border-bottom:1px solid var(--sand)}
+.bkhead h3{font-family:var(--serif);font-size:22px;font-weight:600;color:var(--ink);margin:0}
+.bkhead .note{font-size:13px;color:var(--muted);margin-top:4px}
+.bkclose{flex:none;background:none;border:1px solid var(--sand);border-radius:50%;width:38px;height:38px;font-size:20px;line-height:1;cursor:pointer;color:var(--ink)}
+.bkclose:hover{background:var(--cream)}
+.bkbody{flex:1;overflow:auto;background:#fbf9f4}
+.bkbody iframe,.card .bkinline iframe{display:block;width:100%;min-height:640px;border:none;overflow:hidden}
+.bkfoot{padding:10px 26px 14px;border-top:1px solid var(--sand);font-size:13px;color:var(--muted);text-align:center}
+.bkfoot a{color:var(--green);font-weight:600}
+@media(max-width:720px){.bkmodal{padding:0}.bkbox{max-width:none;max-height:none;height:100dvh;border-radius:0}.bkhead{padding:16px 16px 12px}.bkfoot{padding:10px 16px calc(10px + env(safe-area-inset-bottom))}}
+.card .bkinline{margin:12px -30px -32px;border-top:1px solid var(--sand);background:#fbf9f4}
+@media(max-width:480px){.card .bkinline{margin:12px -20px -24px}}
+body.bklock{overflow:hidden}
+
 .mbar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:120;background:var(--green-deep);padding:10px 12px calc(10px + env(safe-area-inset-bottom));gap:10px;grid-template-columns:1fr 1fr}
 .mbar a{text-align:center;font-weight:600;font-size:14.5px;padding:13px 8px;border-radius:3px}
 .mbar .mcall{background:transparent;border:1px solid var(--bronze);color:#f0ece2}
@@ -300,6 +324,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <a href="#services">Services</a><a href="#why">Why Eliyan</a><a href="#work">Our Work</a><a href="#areas">Service Area</a><a href="#about">About</a><a href="#faq">FAQ</a>
     </div>
     <a class="navcall" href="tel:+12136720727"><small>Call or text</small>(213) 672-0727</a>
+    <a class="navbook js-book" href="#book">Book Online</a>
     <button class="burger" aria-label="Menu" onclick="document.getElementById('mm').classList.toggle('open')"><span></span><span></span><span></span></button>
   </div>
   <div class="mobilemenu" id="mm">
@@ -309,6 +334,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <a href="#areas" onclick="mm.classList.remove('open')">Service Area</a>
     <a href="#about" onclick="mm.classList.remove('open')">About</a>
     <a href="#faq" onclick="mm.classList.remove('open')">FAQ</a>
+    <a class="mmbook js-book" href="#book" onclick="mm.classList.remove('open')">Book My Free Assessment</a>
   </div>
 </nav>
 
@@ -706,7 +732,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="eyebrow" style="color:var(--sand)">Next step</div>
     <h2>Tell us about your project. We respond within 24 hours.</h2>
     <p>A straightforward conversation about your property, a firm written number, and a crew that shows up when they say they will.</p>
-    <a class="btn bronze" href="#quote">Get My Free Assessment</a>
+    <a class="btn bronze js-book" href="#book">Book My Free Assessment</a>
   </div>
 </section>
 
@@ -735,28 +761,93 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="mbar">
   <a class="mcall" href="tel:+12136720727">📞 Call or Text</a>
-  <a class="mquote" href="#quote">Get Free Quote</a>
+  <a class="mquote js-book" href="#book">Book a Time</a>
 </div>
 
 <!-- GHL LeadConnector chat widget: Agustina pastes the account snippet here -->
 <!-- <script src="https://widgets.leadconnectorhq.com/loader.js" data-resources-url="..." data-widget-id="REPLACE_ME"></script> -->
 
+<!-- ===== GHL booking calendar modal (opened by every .js-book CTA) ===== -->
+<div class="bkmodal" id="bkmodal" role="dialog" aria-modal="true" aria-labelledby="bktitle" aria-hidden="true">
+  <div class="bkbox">
+    <div class="bkhead">
+      <div>
+        <h3 id="bktitle">Book your free on-site assessment</h3>
+        <div class="note">Pick a day and time that works for you. You will get a confirmation by text and email.</div>
+      </div>
+      <button class="bkclose" type="button" aria-label="Close" onclick="closeBook()">&times;</button>
+    </div>
+    <div class="bkbody">
+      <iframe data-src="https://api.leadconnectorhq.com/widget/booking/pxL4fqAorvOoHVxhRaY9" allow="payment" style="width:100%;border:none;overflow:hidden" scrolling="no" id="pxL4fqAorvOoHVxhRaY9_1788892581369" title="Eliyan Group booking calendar"></iframe>
+    </div>
+    <div class="bkfoot">Prefer to talk first? <a href="tel:+12136720727">Call or text (213) 672-0727</a></div>
+  </div>
+</div>
+<script src="https://link.msgsndr.com/js/form_embed.js" type="text/javascript"></script>
+
 <script>
 const mm=document.getElementById('mm');
+/* ===== Booking calendar (GoHighLevel) ===== */
+const BK_URL='https://api.leadconnectorhq.com/widget/booking/pxL4fqAorvOoHVxhRaY9';
+const bkmodal=document.getElementById('bkmodal');
+function bkSrc(prefill){
+  const q=new URLSearchParams();
+  if(prefill){
+    const n=(prefill.fullName||'').trim().split(/\s+/);
+    if(n[0]) q.set('first_name',n[0]);
+    if(n.length>1) q.set('last_name',n.slice(1).join(' '));
+    if(prefill.email) q.set('email',prefill.email);
+    if(prefill.phone) q.set('phone',prefill.phone);
+  }
+  const qs=q.toString();
+  return BK_URL+(qs?'?'+qs:'');
+}
+function openBook(prefill){
+  const fr=bkmodal.querySelector('iframe');
+  const want=bkSrc(prefill);
+  if(fr.getAttribute('src')!==want) fr.setAttribute('src',want);
+  bkmodal.classList.add('open');
+  bkmodal.setAttribute('aria-hidden','false');
+  document.body.classList.add('bklock');
+  (window.dataLayer=window.dataLayer||[]).push({event:'book_open',source:prefill?'form':'cta'});
+}
+function closeBook(){
+  bkmodal.classList.remove('open');
+  bkmodal.setAttribute('aria-hidden','true');
+  document.body.classList.remove('bklock');
+  if(location.hash==='#book') history.replaceState(null,'',location.pathname+location.search);
+}
+document.querySelectorAll('.js-book').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();openBook();}));
+bkmodal.addEventListener('click',e=>{if(e.target===bkmodal)closeBook();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&bkmodal.classList.contains('open'))closeBook();});
+/* Deep link: /#book or ?book=1 opens the calendar directly (for ads / SMS links) */
+if(location.hash==='#book'||new URLSearchParams(location.search).get('book')==='1') openBook();
+window.addEventListener('hashchange',()=>{if(location.hash==='#book')openBook();});
+
+/* Quote form: send lead to GHL webhook, then show the calendar inline as step 2 */
 document.getElementById('quote').addEventListener('submit',async function(e){
   e.preventDefault();
   const f=this, hook=f.dataset.ghlWebhook;
   const data=Object.fromEntries(new FormData(f).entries());
+  const btn=f.querySelector('button[type=submit]'); if(btn){btn.disabled=true;btn.textContent='Sending…';}
+  let sent=false;
   if(hook && hook.startsWith('http')){
     try{
       await fetch(hook,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
-      f.innerHTML='<h3>Thank you! ✓</h3><div class="note" style="margin-top:8px">Your request is in. A real person will call or text you within 24 hours to book your free assessment.</div>';
+      sent=true;
     }catch(err){
+      if(btn){btn.disabled=false;btn.textContent='Get My Free Quote →';}
       alert('Something went wrong sending your request. Please call or text us at (213) 672-0727.');
+      return;
     }
-  }else{
-    f.innerHTML='<h3>Thank you! ✓</h3><div class="note" style="margin-top:8px">Your request is in. A real person will call or text you within 24 hours to book your free assessment.</div><div class="note" style="color:#a33">[DEV NOTE: webhook not connected yet]</div>';
   }
+  (window.dataLayer=window.dataLayer||[]).push({event:'form_submit',form:'quote',service:data.service||'',city:data.city||''});
+  (window.dataLayer=window.dataLayer||[]).push({event:'book_open',source:'form'});
+  f.innerHTML='<h3>Thank you! ✓</h3>'
+    +'<div class="note" style="margin-top:8px">Your request is in. <strong>Step 2:</strong> pick a day and time below for your free on-site assessment, or a real person will call or text you within 24 hours.</div>'
+    +(sent?'':'<div class="note" style="color:#a33">[DEV NOTE: webhook not connected yet]</div>')
+    +'<div class="bkinline"><iframe src="'+bkSrc(data).replace(/"/g,'&quot;')+'" allow="payment" style="width:100%;border:none;overflow:hidden" scrolling="no" id="pxL4fqAorvOoHVxhRaY9_inline" title="Eliyan Group booking calendar"></iframe></div>';
+  f.scrollIntoView({behavior:'smooth',block:'start'});
 });
 </script>
 
