@@ -264,6 +264,11 @@ details .a{padding:0 24px 22px;font-size:15px;color:var(--muted);max-width:780px
 .nextitem{background:var(--white);border-radius:5px;padding:28px 26px}
 .nextitem b{font-family:var(--serif);font-size:18px;color:var(--green);display:block;margin-bottom:8px}
 .nextitem p{font-size:14px;color:var(--muted)}
+.booking{background:var(--cream)}
+.booking .lead{max-width:640px;color:var(--muted);margin-top:12px}
+.bkpanel{max-width:960px;margin:34px auto 0;background:var(--white);border:1px solid var(--sand);border-radius:6px;box-shadow:0 24px 60px rgba(12,16,10,.10);overflow:hidden}
+.bkpanel .bkbody{background:#fbf9f4}
+.card .addrgrid{display:grid;grid-template-columns:1fr 72px 110px;gap:12px}
 .final{position:relative;color:#fff;isolation:isolate;text-align:center}
 .final::before{content:"";position:absolute;inset:0;background:url('https://d8j0ntlcm91z4.cloudfront.net/user_3A5BA9dn7XV01NYzRhV3qdjkRz9/hf_20260817_112825_a48157e2-2814-43fb-ad37-f67d42fe5850.png') center 70%/cover no-repeat;z-index:-2}
 .final::after{content:"";position:absolute;inset:0;background:rgba(20,26,17,.82);z-index:-1}
@@ -293,34 +298,46 @@ footer li{list-style:none;padding:4px 0}
 .bkhead .note{font-size:13px;color:var(--muted);margin-top:4px}
 .bkclose{flex:none;background:none;border:1px solid var(--sand);border-radius:50%;width:38px;height:38px;font-size:20px;line-height:1;cursor:pointer;color:var(--ink)}
 .bkclose:hover{background:var(--cream)}
-.bkbody{flex:1;overflow:auto;background:#fbf9f4}
-.bkbody iframe,.card .bkinline iframe{display:block;width:100%;min-height:640px;border:none;overflow:hidden}
+.bkbox .bkflowhost{flex:1;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch}
+.bkbox .bksteps{position:sticky;top:0;z-index:1}
+.bkbody{background:#fbf9f4}
+.bkbody iframe,.card .bkinline iframe{display:block;width:100%;min-height:640px;border:none}
 .bkfoot{padding:10px 26px 14px;border-top:1px solid var(--sand);font-size:13px;color:var(--muted);text-align:center}
 .bkfoot a{color:var(--green);font-weight:600}
 @media(max-width:720px){.bkmodal{padding:0}.bkbox{max-width:none;max-height:none;height:100dvh;border-radius:0}.bkhead{padding:16px 16px 12px}.bkfoot{padding:10px 16px calc(10px + env(safe-area-inset-bottom))}}
 .card .bkinline{margin:12px -30px -32px;border-top:1px solid var(--sand);background:#fbf9f4}
 @media(max-width:480px){.card .bkinline{margin:12px -20px -24px}}
 body.bklock{overflow:hidden}
-.bkstep2{display:none;padding:22px 26px 26px;background:var(--white)}
-.bkbox.step2 .bkbody{display:none}.bkbox.step2 .bkstep2{display:block}
-.bkstep2 .booked{display:flex;gap:12px;align-items:flex-start;background:#eef3ea;border:1px solid #cfdcc6;border-radius:4px;padding:12px 14px;margin-bottom:6px}
-.bkstep2 .booked .tick{flex:none;width:28px;height:28px;border-radius:50%;background:var(--green);color:#fff;font-weight:700;display:grid;place-items:center;font-size:15px}
-.bkstep2 .booked b{display:block;color:var(--green);font-size:15px}
-.bkstep2 .booked span{font-size:13px;color:var(--muted)}
-.bkstep2 h3{font-family:var(--serif);font-size:21px;font-weight:600;margin:14px 0 2px}
-.bkstep2 .note{font-size:13px;color:var(--muted);margin-bottom:6px}
-.bkstep2 label{display:block;font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:13px 0 5px}
-.bkstep2 label b{color:var(--bronze)}
-.bkstep2 input,.bkstep2 select,.bkstep2 textarea{width:100%;padding:12px 13px;border:1px solid var(--sand);background:#fbf9f4;font-family:var(--sans);font-size:15px;border-radius:3px;color:var(--ink)}
-.bkstep2 textarea{min-height:70px;resize:vertical}
-.bkstep2 input:focus,.bkstep2 select:focus,.bkstep2 textarea:focus{outline:2px solid var(--green);outline-offset:0}
-.bkstep2 .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-@media(max-width:480px){.bkstep2 .row2{grid-template-columns:1fr}.bkstep2{padding:16px}}
-.bkstep2 .consent{display:flex;gap:9px;align-items:flex-start;margin-top:14px}
-.bkstep2 .consent input{width:auto;margin-top:3px}
-.bkstep2 .btn{width:100%;margin-top:16px;font-size:16px}
-.bkstep2 .skip{display:block;text-align:center;font-size:13px;color:var(--muted);margin-top:10px;text-decoration:underline;cursor:pointer;background:none;border:none;font-family:var(--sans)}
-.bkstep2 .contactrow{display:none}.bkstep2.needcontact .contactrow{display:block}
+.bkform{display:none;padding:22px 26px 26px;background:var(--white)}
+/* flow states: address gate -> calendar -> project details */
+.bkflow .bkgate,.bkflow .bkstep2,.bkflow .bkbody{display:none}
+.bkflow.s-gate .bkgate{display:block}.bkflow.s-cal .bkbody{display:block}.bkflow.s-step2 .bkstep2{display:block}
+.bksteps{display:flex;gap:18px;padding:12px 26px;border-bottom:1px solid var(--sand);background:var(--white);font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.bksteps span{display:flex;align-items:center;gap:7px}
+.bksteps span::before{content:attr(data-n);display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--sand);color:var(--ink);font-size:11px}
+.bksteps span.on{color:var(--ink)}.bksteps span.on::before{background:var(--green);color:#fff}
+.bksteps span.done::before{content:"\2713";background:var(--bronze);color:#fff}
+@media(max-width:480px){.bksteps{gap:12px;padding:10px 16px;font-size:10.5px}}
+.bkform .addrgrid{display:grid;grid-template-columns:1fr 72px 110px;gap:12px}
+.bkform .under{font-size:12px;color:var(--muted);text-align:center;margin-top:11px}
+.bkform .booked{display:flex;gap:12px;align-items:flex-start;background:#eef3ea;border:1px solid #cfdcc6;border-radius:4px;padding:12px 14px;margin-bottom:6px}
+.bkform .booked .tick{flex:none;width:28px;height:28px;border-radius:50%;background:var(--green);color:#fff;font-weight:700;display:grid;place-items:center;font-size:15px}
+.bkform .booked b{display:block;color:var(--green);font-size:15px}
+.bkform .booked span{font-size:13px;color:var(--muted)}
+.bkform h3{font-family:var(--serif);font-size:21px;font-weight:600;margin:14px 0 2px}
+.bkform .note{font-size:13px;color:var(--muted);margin-bottom:6px}
+.bkform label{display:block;font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:13px 0 5px}
+.bkform label b{color:var(--bronze)}
+.bkform input,.bkform select,.bkform textarea{width:100%;padding:12px 13px;border:1px solid var(--sand);background:#fbf9f4;font-family:var(--sans);font-size:15px;border-radius:3px;color:var(--ink)}
+.bkform textarea{min-height:70px;resize:vertical}
+.bkform input:focus,.bkform select:focus,.bkform textarea:focus{outline:2px solid var(--green);outline-offset:0}
+.bkform .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:480px){.bkform .row2{grid-template-columns:1fr}.bkform{padding:16px}}
+.bkform .consent{display:flex;gap:9px;align-items:flex-start;margin-top:14px}
+.bkform .consent input{width:auto;margin-top:3px}
+.bkform .btn{width:100%;margin-top:16px;font-size:16px}
+.bkform .skip{display:block;text-align:center;font-size:13px;color:var(--muted);margin-top:10px;text-decoration:underline;cursor:pointer;background:none;border:none;font-family:var(--sans)}
+.bkform .contactrow,.bkform .addrrow{display:none}.bkform.needcontact .contactrow{display:block}.bkform.needaddr .addrrow{display:block}
 .bkfoot .later{display:block;margin-top:4px;font-size:12px;color:var(--muted);text-decoration:underline;cursor:pointer;background:none;border:none;font-family:var(--sans)}
 
 .mbar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:120;background:var(--green-deep);padding:10px 12px calc(10px + env(safe-area-inset-bottom));gap:10px;grid-template-columns:1fr 1fr}
@@ -410,19 +427,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </select>
         </div>
       </div>
-      <div class="row2">
+      <label>Jobsite street address <b>*</b></label>
+      <input type="text" name="street" placeholder="123 Palm Avenue" required autocomplete="street-address">
+      <div class="addrgrid">
         <div>
           <label>City <b>*</b></label>
-          <select name="city" required>
-            <option value="">Select your area</option>
-            <option>Coral Gables</option><option>Pinecrest</option><option>Palmetto Bay</option>
-            <option>Aventura</option><option>Fort Lauderdale</option><option>Boca Raton</option>
-            <option>Delray Beach</option><option>Other South Florida</option>
-          </select>
+          <input type="text" name="city" placeholder="Coral Gables" required list="cities" autocomplete="address-level2">
         </div>
         <div>
-          <label>Zip code <b>*</b></label>
-          <input type="text" name="zip" placeholder="33134" required inputmode="numeric" pattern="[0-9]{5}" maxlength="5">
+          <label>State <b>*</b></label>
+          <input type="text" name="state" value="FL" required maxlength="2" autocomplete="address-level1" style="text-transform:uppercase">
+        </div>
+        <div>
+          <label>Zip <b>*</b></label>
+          <input type="text" name="zip" placeholder="33134" required inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code">
         </div>
       </div>
       <label>How soon are you looking to get started?</label>
@@ -748,6 +766,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
+<section class="section booking" id="booking">
+  <div class="wrap">
+    <div class="eyebrow"><span class="no">12</span>Book online</div>
+    <h2>Pick a time for your free on-site assessment.</h2>
+    <p class="lead">Tell us where the project is, choose a day and time that works for you, and a real person confirms by text and email. No deposit, no obligation.</p>
+    <div class="bkpanel">
+      <div class="bkflow bkflowhost" data-source="page"></div>
+      <div class="bkfoot">Prefer to talk first? <a href="tel:+12136720727">Call or text (213) 672-0727</a></div>
+    </div>
+  </div>
+</section>
+
 <section class="section final">
   <div class="wrap">
     <div class="eyebrow" style="color:var(--sand)">Next step</div>
@@ -794,89 +824,105 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="bkhead">
       <div>
         <h3 id="bktitle">Book your free on-site assessment</h3>
-        <div class="note">Pick a day and time that works for you. You will get a confirmation by text and email.</div>
+        <div class="note">First, where is the project? Then pick a day and time that works for you.</div>
       </div>
       <button class="bkclose" type="button" aria-label="Close" onclick="closeBook()">&times;</button>
     </div>
-    <div class="bkbody">
-      <iframe data-src="https://api.leadconnectorhq.com/widget/booking/pxL4fqAorvOoHVxhRaY9" allow="payment" style="width:100%;border:none;overflow:hidden" scrolling="no" id="pxL4fqAorvOoHVxhRaY9_1788892581369" title="Eliyan Group booking calendar"></iframe>
-    </div>
-    <form class="bkstep2" id="bkstep2" novalidate>
-      <div class="booked"><div class="tick">✓</div><div><b>You're booked.</b><span id="bkwhen">Your confirmation is on its way by text and email.</span></div></div>
-      <h3>One more minute: tell us about the project</h3>
-      <div class="note">So the right crew shows up prepared with the right numbers.</div>
-      <div class="contactrow">
-        <div class="row2">
-          <div><label>Full name <b>*</b></label><input type="text" name="fullName" placeholder="Your full name"></div>
-          <div><label>Phone <b>*</b></label><input type="tel" name="phone" placeholder="(305) 000-0000"></div>
-        </div>
-        <label>Email <b>*</b></label><input type="email" name="email" placeholder="your@email.com">
-      </div>
-      <div class="row2">
-        <div>
-          <label>What are we building? <b>*</b></label>
-          <select name="service" required>
-            <option value="">Select a service</option>
-            <option>Concrete driveway</option>
-            <option>Pool patio / pool deck</option>
-            <option>Pavers</option>
-            <option>Slabs, sidewalks or foundation</option>
-            <option>Asphalt driveway or parking</option>
-            <option>Masonry, stucco or paint</option>
-            <option>Other / not sure</option>
-          </select>
-        </div>
-        <div>
-          <label>Home or business? <b>*</b></label>
-          <select name="type" required>
-            <option value="">Select one</option>
-            <option>Home</option>
-            <option>Business</option>
-          </select>
-        </div>
-      </div>
-      <div class="row2">
-        <div>
-          <label>City <b>*</b></label>
-          <select name="city" required>
-            <option value="">Select your area</option>
-            <option>Coral Gables</option><option>Pinecrest</option><option>Palmetto Bay</option>
-            <option>Aventura</option><option>Fort Lauderdale</option><option>Boca Raton</option>
-            <option>Delray Beach</option><option>Other South Florida</option>
-          </select>
-        </div>
-        <div>
-          <label>Zip code <b>*</b></label>
-          <input type="text" name="zip" placeholder="33134" required inputmode="numeric" pattern="[0-9]{5}" maxlength="5">
-        </div>
-      </div>
-      <label>How soon are you looking to get started?</label>
-      <select name="timeline">
-        <option value="">Select a timeline</option>
-        <option>As soon as possible</option>
-        <option>2 to 4 weeks</option>
-        <option>3 to 6 months</option>
-        <option>Just planning for now</option>
-      </select>
-      <label>Tell us about your project</label>
-      <textarea name="details" placeholder="Describe your project, approximate size, or any questions"></textarea>
-      <div class="consent">
-        <input type="checkbox" name="sms_consent" id="bksmsc">
-        <label for="bksmsc" style="all:unset;font-size:12px;color:var(--muted);cursor:pointer">I agree to receive text messages from Eliyan Group about my project. Reply STOP to opt out at any time.</label>
-      </div>
-      <button class="btn" type="submit">Send Project Details →</button>
-      <button class="skip" type="button" onclick="closeBook()">Skip for now, I'm all set</button>
-    </form>
-    <div class="bkfoot">Prefer to talk first? <a href="tel:+12136720727">Call or text (213) 672-0727</a><button class="later" type="button" onclick="showStep2(true)">Already booked? Tell us about your project</button></div>
+    <div class="bkflow bkflowhost" data-source="modal"></div>
+    <div class="bkfoot">Prefer to talk first? <a href="tel:+12136720727">Call or text (213) 672-0727</a><button class="later" type="button" onclick="showStep2(modalFlow,true)">Already booked? Tell us about your project</button></div>
   </div>
 </div>
+<datalist id="cities"><option value="Coral Gables"><option value="Pinecrest"><option value="Palmetto Bay"><option value="Aventura"><option value="Fort Lauderdale"><option value="Boca Raton"><option value="Delray Beach"><option value="Miami"><option value="Miami Beach"><option value="Hollywood"><option value="Weston"><option value="Davie"><option value="Plantation"><option value="Pembroke Pines"></datalist>
+
+<!-- Booking flow (address -> calendar -> project details). Mounted into every .bkflowhost by JS. -->
+<template id="bkflow-tpl">
+  <div class="bksteps"><span data-n="1" class="on">Address</span><span data-n="2">Pick a time</span><span data-n="3">Details</span></div>
+  <form class="bkform bkgate" novalidate>
+    <h3>Where is the project?</h3>
+    <div class="note">We book assessments to a jobsite address so the right crew shows up at the right property.</div>
+    <label>Jobsite street address <b>*</b></label>
+    <input type="text" name="street" placeholder="123 Palm Avenue" required autocomplete="street-address">
+    <div class="addrgrid">
+      <div><label>City <b>*</b></label><input type="text" name="city" placeholder="Coral Gables" required list="cities" autocomplete="address-level2"></div>
+      <div><label>State <b>*</b></label><input type="text" name="state" value="FL" required maxlength="2" autocomplete="address-level1" style="text-transform:uppercase"></div>
+      <div><label>Zip <b>*</b></label><input type="text" name="zip" placeholder="33134" required inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code"></div>
+    </div>
+    <button class="btn" type="submit">Continue to pick a time →</button>
+    <div class="under">🔒 Your information is never shared.</div>
+  </form>
+  <div class="bkbody">
+    <iframe data-src="https://api.leadconnectorhq.com/widget/booking/pxL4fqAorvOoHVxhRaY9" allow="payment" style="width:100%;border:none" title="Eliyan Group booking calendar"></iframe>
+  </div>
+  <form class="bkform bkstep2" novalidate>
+    <div class="booked"><div class="tick">✓</div><div><b>You're booked.</b><span class="bkwhen">Your confirmation is on its way by text and email.</span></div></div>
+    <h3>One more minute: tell us about the project</h3>
+    <div class="note">So the right crew shows up prepared with the right numbers.</div>
+    <div class="contactrow">
+      <div class="row2">
+        <div><label>Full name <b>*</b></label><input type="text" name="fullName" placeholder="Your full name"></div>
+        <div><label>Phone <b>*</b></label><input type="tel" name="phone" placeholder="(305) 000-0000"></div>
+      </div>
+      <label>Email <b>*</b></label><input type="email" name="email" placeholder="your@email.com">
+    </div>
+    <div class="addrrow">
+      <label>Jobsite street address <b>*</b></label>
+      <input type="text" name="street" placeholder="123 Palm Avenue" autocomplete="street-address">
+      <div class="addrgrid">
+        <div><label>City <b>*</b></label><input type="text" name="city" placeholder="Coral Gables" list="cities" autocomplete="address-level2"></div>
+        <div><label>State <b>*</b></label><input type="text" name="state" value="FL" maxlength="2" autocomplete="address-level1" style="text-transform:uppercase"></div>
+        <div><label>Zip <b>*</b></label><input type="text" name="zip" placeholder="33134" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code"></div>
+      </div>
+    </div>
+    <div class="row2">
+      <div>
+        <label>What are we building? <b>*</b></label>
+        <select name="service" required>
+          <option value="">Select a service</option>
+          <option>Concrete driveway</option>
+          <option>Pool patio / pool deck</option>
+          <option>Pavers</option>
+          <option>Slabs, sidewalks or foundation</option>
+          <option>Asphalt driveway or parking</option>
+          <option>Masonry, stucco or paint</option>
+          <option>Other / not sure</option>
+        </select>
+      </div>
+      <div>
+        <label>Home or business? <b>*</b></label>
+        <select name="type" required>
+          <option value="">Select one</option>
+          <option>Home</option>
+          <option>Business</option>
+        </select>
+      </div>
+    </div>
+    <label>How soon are you looking to get started?</label>
+    <select name="timeline">
+      <option value="">Select a timeline</option>
+      <option>As soon as possible</option>
+      <option>2 to 4 weeks</option>
+      <option>3 to 6 months</option>
+      <option>Just planning for now</option>
+    </select>
+    <label>Tell us about your project</label>
+    <textarea name="details" placeholder="Describe your project, approximate size, or any questions"></textarea>
+    <label class="consent" style="all:unset;display:flex;gap:9px;align-items:flex-start;margin-top:14px;font-size:12px;color:var(--muted);line-height:1.45;cursor:pointer"><input type="checkbox" name="sms_consent" style="width:auto;margin-top:3px"><span>I agree to receive text messages from Eliyan Group about my project. Reply STOP to opt out at any time.</span></label>
+    <button class="btn" type="submit">Send Project Details →</button>
+    <button class="skip js-skip" type="button">Skip for now, I'm all set</button>
+  </form>
+</template>
 <script src="https://link.msgsndr.com/js/form_embed.js" type="text/javascript"></script>
 
 <script>
 const mm=document.getElementById('mm');
-/* ===== Booking calendar (GoHighLevel) ===== */
+/* ===== Booking flow (GoHighLevel calendar): jobsite address -> calendar -> project details =====
+   Mounted from <template id="bkflow-tpl"> into the modal (.js-book CTAs, /#book, ?book=1) and the on-page #booking section.
+   The address is required before the calendar is shown and is posted to the GHL webhook with the booking. */
 const BK_URL='https://api.leadconnectorhq.com/widget/booking/pxL4fqAorvOoHVxhRaY9';
-const bkmodal=document.getElementById('bkmodal');
+const BK_HOOK=document.getElementById('quote').dataset.ghlWebhook;
+const bkmodal=document.getElementById('bkmodal'), bkbox=bkmodal.querySelector('.bkbox');
+const flows=[];
+const dl=o=>(window.dataLayer=window.dataLayer||[]).push(o);
 function bkSrc(prefill){
   const q=new URLSearchParams();
   if(prefill){
@@ -889,101 +935,152 @@ function bkSrc(prefill){
   const qs=q.toString();
   return BK_URL+(qs?'?'+qs:'');
 }
-function openBook(prefill){
-  const fr=bkmodal.querySelector('iframe');
-  const want=bkSrc(prefill);
-  if(fr.getAttribute('src')!==want) fr.setAttribute('src',want);
-  bkmodal.classList.add('open');
-  bkmodal.setAttribute('aria-hidden','false');
-  document.body.classList.add('bklock');
-  (window.dataLayer=window.dataLayer||[]).push({event:'book_open',source:prefill?'form':'cta'});
+function bkPost(data,keepalive){
+  if(!(BK_HOOK&&BK_HOOK.startsWith('http'))) return Promise.resolve(false);
+  return fetch(BK_HOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data),keepalive:!!keepalive}).then(()=>true);
 }
-function closeBook(){
-  bkmodal.classList.remove('open');
-  if(bkDone){bkbox.classList.remove('step2');bkbox.querySelector('.bkhead h3').textContent='Book your free on-site assessment';bkbox.querySelector('.bkhead .note').textContent='Pick a day and time that works for you. You will get a confirmation by text and email.';}
-  bkmodal.setAttribute('aria-hidden','true');
-  document.body.classList.remove('bklock');
-  if(location.hash==='#book') history.replaceState(null,'',location.pathname+location.search);
-}
-/* Step 2 after the calendar: GHL widget posts "set-sticky-contacts" (contact + appointment)
-   then "msgsndr-booking-complete" to the parent when a booking is finalized. */
-const bkbox=bkmodal.querySelector('.bkbox'), bkstep2=document.getElementById('bkstep2');
-let bkContact={}, bkAppt={}, bkDone=false;
 function bkPick(o,keys){for(const k of keys){if(o&&o[k])return String(o[k]);}return '';}
-function bkAbsorb(payload){
+/* Sizing: the widget is an iframe-resizer child, so form_embed.js's iFrameResize keeps the iframe as tall as the
+   current step (calendar, slots, contact form). The widget's own "highlevel.setHeight" message is used as a floor,
+   and as the only sizing if iFrameResize is unavailable. The iframe is never scrolling="no", so it can still scroll inside. */
+function bkWatch(fr){ try{ if(typeof window.iFrameResize==='function'){ window.iFrameResize({checkOrigin:false,log:false,scrolling:true,heightCalculationMethod:'lowestElement'},fr); fr.dataset.resizer='1'; } }catch(e){} }
+function bkResize(fr,d){
+  if(!(d&&d[0]==='highlevel.setHeight'&&d[1]&&+d[1].height>0)) return;
+  const h=(+d[1].height+8)+'px'; fr.style.minHeight=h; if(!fr.dataset.resizer) fr.style.height=h;
+}
+function bkAbsorb(fl,payload){
   try{const o=typeof payload==='string'?JSON.parse(payload):payload; if(!o||typeof o!=='object')return;
     const c=o.contact&&typeof o.contact==='object'?{...o,...o.contact}:o;
     const first=bkPick(c,['first_name','firstName','firstname']), last=bkPick(c,['last_name','lastName','lastname']);
     const full=bkPick(c,['full_name','fullName','name'])||(first+' '+last).trim();
-    if(full) bkContact.fullName=full;
-    const em=bkPick(c,['email']); if(em) bkContact.email=em;
-    const ph=bkPick(c,['phone','phone_number','phoneNumber']); if(ph) bkContact.phone=ph;
-    if(o.appointment&&typeof o.appointment==='object') bkAppt=o.appointment;
+    if(full) fl.contact.fullName=full;
+    const em=bkPick(c,['email']); if(em) fl.contact.email=em;
+    const ph=bkPick(c,['phone','phone_number','phoneNumber']); if(ph) fl.contact.phone=ph;
+    if(o.appointment&&typeof o.appointment==='object') fl.appt=o.appointment;
   }catch(e){}
 }
-function showStep2(manual){
-  if(bkDone) return;
-  const f=bkstep2;
-  const need=!(bkContact.fullName&&(bkContact.phone||bkContact.email));
-  f.classList.toggle('needcontact',need||!!manual&&need);
-  ['fullName','phone','email'].forEach(k=>{const i=f.querySelector('[name='+k+']'); if(i){i.value=bkContact[k]||''; i.required=need;}});
-  const when=bkAppt&&(bkAppt.start_time||bkAppt.startTime);
-  const w=document.getElementById('bkwhen');
-  if(when&&w) w.textContent='Free on-site assessment: '+when+'. Confirmation is on its way by text and email.';
-  bkbox.classList.add('step2');
-  bkbox.querySelector('.bkhead h3').textContent='Almost done';
-  bkbox.querySelector('.bkhead .note').textContent='Your time is reserved. A few quick details so we arrive prepared.';
-  (window.dataLayer=window.dataLayer||[]).push({event:'booking_complete',calendar:BK_URL.split('/').pop(),manual:!!manual});
+function setStep(fl,step){
+  fl.step=step;
+  fl.root.classList.remove('s-gate','s-cal','s-step2'); fl.root.classList.add('s-'+step);
+  const order=['gate','cal','step2'], i=order.indexOf(step);
+  fl.root.querySelectorAll('.bksteps span').forEach((el,j)=>{el.classList.toggle('on',j===i);el.classList.toggle('done',j<i);});
+  if(fl.opts.onStep) fl.opts.onStep(fl,step);
 }
+function loadCal(fl,prefill){
+  const want=bkSrc(prefill);
+  if(fl.iframe.getAttribute('src')!==want){fl.iframe.style.height='';fl.iframe.style.minHeight='';fl.iframe.setAttribute('src',want);bkWatch(fl.iframe);}
+}
+function appt(fl){return {appointment_start:fl.appt.start_time||fl.appt.startTime||'',appointment_end:fl.appt.end_time||fl.appt.endTime||''};}
+/* If the visitor booked but skips the details form, the jobsite address still reaches GHL. */
+function flushAddr(fl){
+  if(!fl.pending) return; fl.pending=false;
+  bkPost({...fl.contact,...fl.addr,source:'booking-address',...appt(fl)},true).catch(()=>{});
+}
+function showStep2(fl,manual){
+  if(fl.done) return;
+  const f=fl.step2;
+  const needC=!(fl.contact.fullName&&(fl.contact.phone||fl.contact.email)), needA=!fl.addr;
+  f.classList.toggle('needcontact',needC); f.classList.toggle('needaddr',needA);
+  ['fullName','phone','email'].forEach(k=>{const i=f.querySelector('[name='+k+']'); i.value=fl.contact[k]||''; i.required=needC;});
+  ['street','city','state','zip'].forEach(k=>{const i=f.querySelector('[name='+k+']'); i.value=(fl.addr&&fl.addr[k])||(k==='state'?'FL':''); i.required=needA;});
+  const when=fl.appt&&(fl.appt.start_time||fl.appt.startTime), w=f.querySelector('.bkwhen');
+  if(when&&w) w.textContent='Free on-site assessment: '+when+'. Confirmation is on its way by text and email.';
+  fl.pending=!manual&&!needC&&!needA;
+  setStep(fl,'step2');
+  dl({event:'booking_complete',calendar:BK_URL.split('/').pop(),manual:!!manual,source:fl.opts.source});
+}
+function mountFlow(root,opts){
+  root.innerHTML=''; root.appendChild(document.getElementById('bkflow-tpl').content.cloneNode(true));
+  const fl={root,opts:opts||{},step:'gate',iframe:root.querySelector('.bkbody iframe'),gate:root.querySelector('.bkgate'),step2:root.querySelector('.bkstep2'),addr:null,contact:{},appt:{},done:false,pending:false};
+  fl.iframe.id='ghlcal_'+(flows.length+1);
+  fl.gate.addEventListener('submit',e=>{
+    e.preventDefault(); if(!fl.gate.reportValidity()) return;
+    fl.addr=Object.fromEntries(new FormData(fl.gate).entries()); fl.addr.state=(fl.addr.state||'FL').toUpperCase();
+    loadCal(fl); setStep(fl,'cal');
+    dl({event:'book_address',source:fl.opts.source,city:fl.addr.city,zip:fl.addr.zip});
+    if(fl.opts.source==='page') root.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+  fl.step2.addEventListener('submit',async e=>{
+    e.preventDefault(); const f=fl.step2; if(!f.reportValidity()) return;
+    const data=Object.fromEntries(new FormData(f).entries());
+    Object.assign(data,{fullName:data.fullName||fl.contact.fullName||'',phone:data.phone||fl.contact.phone||'',email:data.email||fl.contact.email||''},fl.addr||{},{source:'booking-step2'},appt(fl));
+    data.state=(data.state||'FL').toUpperCase();
+    const btn=f.querySelector('button[type=submit]'); if(btn){btn.disabled=true;btn.textContent='Sending…';}
+    try{ await bkPost(data); }
+    catch(err){ if(btn){btn.disabled=false;btn.textContent='Send Project Details →';} alert('Something went wrong. Please call or text us at (213) 672-0727.'); return; }
+    fl.done=true; fl.pending=false;
+    dl({event:'form_submit',form:'booking-step2',service:data.service||'',city:data.city||'',source:fl.opts.source});
+    f.innerHTML='<div class="booked"><div class="tick">✓</div><div><b>All set. See you on site.</b><span>Your project details are with the team. We will confirm the visit by text and email.</span></div></div><button class="btn js-done" type="button">Done</button>';
+    f.querySelector('.js-done').addEventListener('click',()=>fl.opts.onDone&&fl.opts.onDone(fl));
+  });
+  root.querySelector('.js-skip').addEventListener('click',()=>{flushAddr(fl); fl.done=true; fl.opts.onDone&&fl.opts.onDone(fl);});
+  setStep(fl,'gate');
+  flows.push(fl); return fl;
+}
+function resetFlow(fl){ const i=flows.indexOf(fl); if(i>-1) flows.splice(i,1); return mountFlow(fl.root,fl.opts); }
 window.addEventListener('message',e=>{
-  const fr=bkmodal.querySelector('iframe'); if(!fr||e.source!==fr.contentWindow) return;
   const d=e.data; if(!Array.isArray(d)) return;
-  if(d[0]==='set-sticky-contacts'&&d[1]==='_ud') bkAbsorb(d[2]);
-  if(d[0]==='msgsndr-booking-complete') setTimeout(()=>showStep2(false),400);
+  const fl=flows.find(f=>f.iframe.contentWindow===e.source);
+  if(fl){
+    bkResize(fl.iframe,d);
+    if(d[0]==='set-sticky-contacts'&&d[1]==='_ud') bkAbsorb(fl,d[2]);
+    if(d[0]==='msgsndr-booking-complete') setTimeout(()=>showStep2(fl,false),400);
+    return;
+  }
+  const inl=document.querySelector('#quote .bkinline iframe'); if(inl&&inl.contentWindow===e.source) bkResize(inl,d);
 });
-bkstep2.addEventListener('submit',async function(e){
-  e.preventDefault();
-  const f=this; if(!f.reportValidity()) return;
-  const hook=document.getElementById('quote').dataset.ghlWebhook;
-  const data=Object.fromEntries(new FormData(f).entries());
-  Object.assign(data,{fullName:data.fullName||bkContact.fullName||'',phone:data.phone||bkContact.phone||'',email:data.email||bkContact.email||'',source:'booking-step2',appointment_start:bkAppt.start_time||bkAppt.startTime||'',appointment_end:bkAppt.end_time||bkAppt.endTime||''});
-  const btn=f.querySelector('button[type=submit]'); if(btn){btn.disabled=true;btn.textContent='Sending…';}
-  try{ if(hook&&hook.startsWith('http')) await fetch(hook,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}); }
-  catch(err){ if(btn){btn.disabled=false;btn.textContent='Send Project Details →';} alert('Something went wrong. Please call or text us at (213) 672-0727.'); return; }
-  bkDone=true;
-  (window.dataLayer=window.dataLayer||[]).push({event:'form_submit',form:'booking-step2',service:data.service||'',city:data.city||''});
-  f.innerHTML='<div class="booked"><div class="tick">✓</div><div><b>All set. See you on site.</b><span>Your project details are with the team. We will confirm the visit by text and email.</span></div></div><button class="btn" type="button" onclick="closeBook()">Done</button>';
-});
+window.addEventListener('pagehide',()=>flows.forEach(flushAddr));
+
+/* Modal (every .js-book CTA, /#book, ?book=1) */
+const MODAL_TITLES={gate:['Book your free on-site assessment','First, where is the project? Then pick a day and time that works for you.'],cal:['Pick a day and time','You will get a confirmation by text and email.'],step2:['Almost done','Your time is reserved. A few quick details so we arrive prepared.']};
+let modalFlow=mountFlow(bkbox.querySelector('.bkflowhost'),{source:'modal',onStep:(fl,st)=>{const t=MODAL_TITLES[st];bkbox.querySelector('.bkhead h3').textContent=t[0];bkbox.querySelector('.bkhead .note').textContent=t[1];},onDone:()=>closeBook()});
+function openBook(){
+  bkmodal.classList.add('open');
+  bkmodal.setAttribute('aria-hidden','false');
+  document.body.classList.add('bklock');
+  const first=modalFlow.step==='gate'?modalFlow.gate.querySelector('input'):null; if(first) setTimeout(()=>first.focus(),50);
+  dl({event:'book_open',source:'cta'});
+}
+function closeBook(){
+  bkmodal.classList.remove('open');
+  bkmodal.setAttribute('aria-hidden','true');
+  document.body.classList.remove('bklock');
+  flushAddr(modalFlow);
+  /* once a booking is complete (details step reached) the next open starts fresh at the address step */
+  if(modalFlow.done||modalFlow.step==='step2') modalFlow=resetFlow(modalFlow);
+  if(location.hash==='#book') history.replaceState(null,'',location.pathname+location.search);
+}
 document.querySelectorAll('.js-book').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();openBook();}));
 bkmodal.addEventListener('click',e=>{if(e.target===bkmodal)closeBook();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&bkmodal.classList.contains('open'))closeBook();});
-/* Deep link: /#book or ?book=1 opens the calendar directly (for ads / SMS links) */
 if(location.hash==='#book'||new URLSearchParams(location.search).get('book')==='1') openBook();
 window.addEventListener('hashchange',()=>{if(location.hash==='#book')openBook();});
 
-/* Quote form: send lead to GHL webhook, then show the calendar inline as step 2 */
+/* On-page booking section */
+let pageFlow=mountFlow(document.querySelector('#booking .bkflowhost'),{source:'page',onDone:fl=>{pageFlow=resetFlow(fl);}});
+
+/* Quote form: full jobsite address is required here, so after the lead is sent the calendar shows inline as step 2 */
 document.getElementById('quote').addEventListener('submit',async function(e){
   e.preventDefault();
-  const f=this, hook=f.dataset.ghlWebhook;
+  const f=this;
+  if(!f.reportValidity()) return;
   const data=Object.fromEntries(new FormData(f).entries());
+  data.state=(data.state||'FL').toUpperCase();
   const btn=f.querySelector('button[type=submit]'); if(btn){btn.disabled=true;btn.textContent='Sending…';}
   let sent=false;
-  if(hook && hook.startsWith('http')){
-    try{
-      await fetch(hook,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
-      sent=true;
-    }catch(err){
-      if(btn){btn.disabled=false;btn.textContent='Get My Free Quote →';}
-      alert('Something went wrong sending your request. Please call or text us at (213) 672-0727.');
-      return;
-    }
+  try{ sent=await bkPost(data); }
+  catch(err){
+    if(btn){btn.disabled=false;btn.textContent='Get My Free Quote →';}
+    alert('Something went wrong sending your request. Please call or text us at (213) 672-0727.');
+    return;
   }
-  (window.dataLayer=window.dataLayer||[]).push({event:'form_submit',form:'quote',service:data.service||'',city:data.city||''});
-  (window.dataLayer=window.dataLayer||[]).push({event:'book_open',source:'form'});
+  dl({event:'form_submit',form:'quote',service:data.service||'',city:data.city||''});
+  dl({event:'book_open',source:'form'});
   f.innerHTML='<h3>Thank you! ✓</h3>'
     +'<div class="note" style="margin-top:8px">Your request is in. <strong>Step 2:</strong> pick a day and time below for your free on-site assessment, or a real person will call or text you within 24 hours.</div>'
     +(sent?'':'<div class="note" style="color:#a33">[DEV NOTE: webhook not connected yet]</div>')
-    +'<div class="bkinline"><iframe src="'+bkSrc(data).replace(/"/g,'&quot;')+'" allow="payment" style="width:100%;border:none;overflow:hidden" scrolling="no" id="pxL4fqAorvOoHVxhRaY9_inline" title="Eliyan Group booking calendar"></iframe></div>';
+    +'<div class="bkinline"><iframe src="'+bkSrc(data).replace(/"/g,'&quot;')+'" allow="payment" style="width:100%;border:none" id="pxL4fqAorvOoHVxhRaY9_inline" title="Eliyan Group booking calendar"></iframe></div>';
+  bkWatch(f.querySelector('.bkinline iframe'));
   f.scrollIntoView({behavior:'smooth',block:'start'});
 });
 </script>
