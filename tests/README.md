@@ -23,6 +23,11 @@ python3 tests/test_step2.py   https://www.eliyangroup.com/ live
 The GHL webhook is mocked in both suites and the widget's "Schedule meeting" button is never
 clicked, so no leads or appointments are created. Screenshots land in `tests/.shots/`.
 
+**Month-end note (2026-09-30):** `walk_to_confirm()` clicks the second open day in the widget's
+current month view. When fewer than two days are open (e.g. the last day of a month) it first
+clicks the widget's `button.arrowNext` to move to the next month, so the suite stays green
+year-round.
+
 ## Iframe sizing (the "can't scroll to confirm" bug, fixed 2026-09-22)
 
 The widget posts `["highlevel.setHeight",{height}]` but `form_embed.js` only sizes iframes that

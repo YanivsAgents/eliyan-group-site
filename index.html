@@ -138,6 +138,7 @@ nav{background:rgba(244,239,230,.96);backdrop-filter:blur(8px);border-bottom:1px
 .consent input{width:auto;margin-top:2px}
 .card .btn{width:100%;margin-top:16px;font-size:16px}
 .card .under{font-size:12px;color:var(--muted);text-align:center;margin-top:11px}
+.card .under a,.bkform .under a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
 .card .call{display:block;text-align:center;font-weight:600;color:var(--green);font-size:16px;margin-top:9px}
 
 /* risk reversal strip */
@@ -283,6 +284,7 @@ footer{background:var(--green-dark);color:#b9bcab;font-size:13.5px;padding:56px 
 footer h4{color:#fff;font-size:12px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:14px}
 footer li{list-style:none;padding:4px 0}
 .fbottom{border-top:1px solid rgba(255,255,255,.12);margin-top:44px;padding:22px 24px 0;text-align:center;font-size:12px;color:#8b8f7d}
+.fbottom a{color:#b9bcab;text-decoration:underline;text-underline-offset:3px}.fbottom a:hover{color:#fff}
 
 /* sticky mobile bar */
 /* ===== Booking (GHL calendar) ===== */
@@ -337,6 +339,7 @@ body.bklock{overflow:hidden}
 .bkform .consent input{width:auto;margin-top:3px}
 .bkform .btn{width:100%;margin-top:16px;font-size:16px}
 .bkform .skip{display:block;text-align:center;font-size:13px;color:var(--muted);margin-top:10px;text-decoration:underline;cursor:pointer;background:none;border:none;font-family:var(--sans)}
+.bkform .bklegal{font-size:11.5px;color:var(--muted);margin-top:10px;line-height:1.45}.bkform .bklegal a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
 .bkform .contactrow,.bkform .addrrow{display:none}.bkform.needcontact .contactrow{display:block}.bkform.needaddr .addrrow{display:block}
 .bkfoot .later{display:block;margin-top:4px;font-size:12px;color:var(--muted);text-decoration:underline;cursor:pointer;background:none;border:none;font-family:var(--sans)}
 
@@ -458,7 +461,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <label for="smsc" style="all:unset;font-size:12px;color:var(--muted);cursor:pointer">I agree to receive text messages from Eliyan Group about my project. Reply STOP to opt out at any time.</label>
       </div>
       <button class="btn" type="submit">Get My Free Quote →</button>
-      <div class="under">🔒 Your information is never shared.</div>
+      <div class="under">🔒 We never sell your information. <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a></div>
       <a class="call" href="tel:+12136720727">or call / text us: (213) 672-0727</a>
     </form>
   </div>
@@ -807,7 +810,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <ul><li>Coral Gables</li><li>Pinecrest</li><li>Palmetto Bay</li><li>Aventura</li><li>Fort Lauderdale</li><li>Boca Raton</li><li>Delray Beach</li></ul>
     </div>
   </div>
-  <div class="fbottom">© 2026 Eliyan Group. All rights reserved.</div>
+  <div class="fbottom">© 2026 Eliyan Group. All rights reserved. &nbsp;·&nbsp; <a href="/privacy">Privacy Policy</a></div>
 </footer>
 
 <div class="mbar">
@@ -848,7 +851,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div><label>Zip <b>*</b></label><input type="text" name="zip" placeholder="33134" required inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code"></div>
     </div>
     <button class="btn" type="submit">Continue to pick a time →</button>
-    <div class="under">🔒 Your information is never shared.</div>
+    <div class="under">🔒 We never sell your information. <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a></div>
   </form>
   <div class="bkbody">
     <iframe data-src="https://api.leadconnectorhq.com/widget/booking/pxL4fqAorvOoHVxhRaY9" allow="payment" style="width:100%;border:none" title="Eliyan Group booking calendar"></iframe>
@@ -907,6 +910,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <label>Tell us about your project</label>
     <textarea name="details" placeholder="Describe your project, approximate size, or any questions"></textarea>
     <label class="consent" style="all:unset;display:flex;gap:9px;align-items:flex-start;margin-top:14px;font-size:12px;color:var(--muted);line-height:1.45;cursor:pointer"><input type="checkbox" name="sms_consent" style="width:auto;margin-top:3px"><span>I agree to receive text messages from Eliyan Group about my project. Reply STOP to opt out at any time.</span></label>
+    <div class="bklegal">By sending, you agree to our <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>.</div>
     <button class="btn" type="submit">Send Project Details →</button>
     <button class="skip js-skip" type="button">Skip for now, I'm all set</button>
   </form>

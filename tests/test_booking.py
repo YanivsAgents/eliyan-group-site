@@ -21,7 +21,11 @@ async def iframe_h(page, sel): return await page.evaluate(f"Math.round(document.
 async def walk_to_confirm(page, root, vp_h, tag):
     """day -> slot -> Select -> contact form; assert 'Schedule meeting' can be scrolled into view. Never clicks it."""
     fr=await (await page.query_selector(f"{root} iframe")).content_frame()
-    await fr.locator("td.selectable.vdpCell").nth(1).click(); await page.wait_for_timeout(1200)
+    cells=fr.locator("td.selectable.vdpCell")
+    if await cells.count()<2:  # month-end: fewer than two open days left in view -> advance a month (2026-09-30 fix)
+        await fr.locator("button.arrowNext, button[title='Next month']").first.click()
+        await cells.first.wait_for(timeout=30000); await page.wait_for_timeout(800)
+    await cells.nth(1 if await cells.count()>=2 else 0).click(); await page.wait_for_timeout(1200)
     await fr.locator("li.widgets-time-slot").first.click(); await page.wait_for_timeout(1000)
     await fr.locator("button.selected-slot").first.click(); await page.wait_for_timeout(2500)
     h=await iframe_h(page, f"{root} iframe")
