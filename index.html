@@ -773,7 +773,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap">
     <div class="eyebrow"><span class="no">12</span>Book online</div>
     <h2>Pick a time for your free on-site assessment.</h2>
-    <p class="lead">Tell us where the project is, choose a day and time that works for you, and a real person confirms by text and email. No deposit, no obligation.</p>
+    <p class="lead">Tell us who you are and where the project is, choose a day and time that works for you, and a real person confirms by text and email. No deposit, no obligation.</p>
     <div class="bkpanel">
       <div class="bkflow bkflowhost" data-source="page"></div>
       <div class="bkfoot">Prefer to talk first? <a href="tel:+12136720727">Call or text (213) 672-0727</a></div>
@@ -827,7 +827,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="bkhead">
       <div>
         <h3 id="bktitle">Book your free on-site assessment</h3>
-        <div class="note">First, where is the project? Then pick a day and time that works for you.</div>
+        <div class="note">Your details and the jobsite first, then pick a day and time that works for you.</div>
       </div>
       <button class="bkclose" type="button" aria-label="Close" onclick="closeBook()">&times;</button>
     </div>
@@ -839,10 +839,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- Booking flow (address -> calendar -> project details). Mounted into every .bkflowhost by JS. -->
 <template id="bkflow-tpl">
-  <div class="bksteps"><span data-n="1" class="on">Address</span><span data-n="2">Pick a time</span><span data-n="3">Details</span></div>
+  <div class="bksteps"><span data-n="1" class="on">Your info</span><span data-n="2">Pick a time</span><span data-n="3">Details</span></div>
   <form class="bkform bkgate" novalidate>
-    <h3>Where is the project?</h3>
-    <div class="note">We book assessments to a jobsite address so the right crew shows up at the right property.</div>
+    <h3>Who are we meeting, and where?</h3>
+    <div class="note">Your details first, so a real person can reach you even if you do not finish booking. Then the jobsite, so the right crew shows up at the right property.</div>
+    <div class="row2">
+      <div><label>Full name <b>*</b></label><input type="text" name="fullName" placeholder="Your full name" required autocomplete="name"></div>
+      <div><label>Phone <b>*</b></label><input type="tel" name="phone" placeholder="(305) 000-0000" required autocomplete="tel" inputmode="tel"></div>
+    </div>
+    <label>Email <b>*</b></label>
+    <input type="email" name="email" placeholder="your@email.com" required autocomplete="email">
     <label>Jobsite street address <b>*</b></label>
     <input type="text" name="street" placeholder="123 Palm Avenue" required autocomplete="street-address">
     <div class="addrgrid">
@@ -944,6 +950,35 @@ function bkPost(data,keepalive){
   return fetch(BK_HOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data),keepalive:!!keepalive}).then(()=>true);
 }
 function bkPick(o,keys){for(const k of keys){if(o&&o[k])return String(o[k]);}return '';}
+/* ===== Never lose a lead: partial capture (2026-09-30) =====
+   Once a form holds a way to reach the visitor (a 10-digit phone or an email), whatever has been typed so far is posted
+   to the GHL webhook with partial:"true" and source "<form>-partial": 20s after the last keystroke, when focus leaves the
+   form, when the modal closes, and when the page is hidden or closed (keepalive). Re-posts only when the content changed.
+   GHL upserts by email/phone, and the real submit follows with the form's own source. Disclosed in /privacy §01. */
+const PARTIALS=[];
+function bkPartial(form,source){
+  const P={form,source,last:'',timer:null,stopped:false};
+  const digits=v=>String(v||'').replace(/\D/g,'');
+  const reach=d=>digits(d.phone).length>=10||/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(String(d.email||'').trim());
+  function payload(){
+    const d={}; new FormData(form).forEach((v,k)=>{v=String(v).trim(); if(v) d[k]=v;});
+    if(d.state) d.state=d.state.toUpperCase();
+    return Object.assign(d,{source:source+'-partial',partial:'true',page_url:location.href});
+  }
+  P.send=function(keepalive){
+    if(P.stopped) return; const d=payload(); if(!reach(d)) return;
+    const key=JSON.stringify(Object.keys(d).sort().map(k=>[k,d[k]])); if(key===P.last) return; P.last=key;
+    bkPost(d,keepalive).catch(()=>{}); dl({event:'lead_partial',form:source});
+  };
+  P.flush=()=>{clearTimeout(P.timer); P.send(true);};
+  P.stop=()=>{P.stopped=true; clearTimeout(P.timer); const i=PARTIALS.indexOf(P); if(i>-1) PARTIALS.splice(i,1);};
+  const later=ms=>{clearTimeout(P.timer); P.timer=setTimeout(()=>P.send(false),ms);};
+  form.addEventListener('input',()=>later(20000));
+  form.addEventListener('focusout',e=>{ if(!e.relatedTarget||!form.contains(e.relatedTarget)) later(1000); });
+  PARTIALS.push(P); return P;
+}
+window.addEventListener('pagehide',()=>PARTIALS.forEach(p=>p.flush()));
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='hidden') PARTIALS.forEach(p=>p.flush()); });
 /* Sizing: the widget is an iframe-resizer child, so form_embed.js's iFrameResize keeps the iframe as tall as the
    current step (calendar, slots, contact form). The widget's own "highlevel.setHeight" message is used as a floor,
    and as the only sizing if iFrameResize is unavailable. The iframe is never scrolling="no", so it can still scroll inside. */
@@ -978,7 +1013,7 @@ function appt(fl){return {appointment_start:fl.appt.start_time||fl.appt.startTim
 /* If the visitor booked but skips the details form, the jobsite address still reaches GHL. */
 function flushAddr(fl){
   if(!fl.pending) return; fl.pending=false;
-  bkPost({...fl.contact,...fl.addr,source:'booking-address',...appt(fl)},true).catch(()=>{});
+  bkPost({...fl.contact,...fl.addr,source:'booking-address',page_url:location.href,...appt(fl)},true).catch(()=>{});
 }
 function showStep2(fl,manual){
   if(fl.done) return;
@@ -997,17 +1032,24 @@ function mountFlow(root,opts){
   root.innerHTML=''; root.appendChild(document.getElementById('bkflow-tpl').content.cloneNode(true));
   const fl={root,opts:opts||{},step:'gate',iframe:root.querySelector('.bkbody iframe'),gate:root.querySelector('.bkgate'),step2:root.querySelector('.bkstep2'),addr:null,contact:{},appt:{},done:false,pending:false};
   fl.iframe.id='ghlcal_'+(flows.length+1);
+  fl.partial=bkPartial(fl.gate,'website-booking-start');
   fl.gate.addEventListener('submit',e=>{
     e.preventDefault(); if(!fl.gate.reportValidity()) return;
-    fl.addr=Object.fromEntries(new FormData(fl.gate).entries()); fl.addr.state=(fl.addr.state||'FL').toUpperCase();
-    loadCal(fl); setStep(fl,'cal');
+    const g=Object.fromEntries(new FormData(fl.gate).entries());
+    fl.contact={fullName:(g.fullName||'').trim(),phone:(g.phone||'').trim(),email:(g.email||'').trim()};
+    fl.addr={street:g.street||'',city:g.city||'',state:(g.state||'FL').toUpperCase(),zip:g.zip||''};
+    fl.partial.stop();
+    /* the lead is in GHL from this moment, whether or not the calendar step is completed */
+    bkPost({...fl.contact,...fl.addr,source:'website-booking-start',page_url:location.href}).catch(()=>{});
+    loadCal(fl,fl.contact); setStep(fl,'cal');
     dl({event:'book_address',source:fl.opts.source,city:fl.addr.city,zip:fl.addr.zip});
+    dl({event:'form_submit',form:'booking-start',source:fl.opts.source});
     if(fl.opts.source==='page') root.scrollIntoView({behavior:'smooth',block:'start'});
   });
   fl.step2.addEventListener('submit',async e=>{
     e.preventDefault(); const f=fl.step2; if(!f.reportValidity()) return;
     const data=Object.fromEntries(new FormData(f).entries());
-    Object.assign(data,{fullName:data.fullName||fl.contact.fullName||'',phone:data.phone||fl.contact.phone||'',email:data.email||fl.contact.email||''},fl.addr||{},{source:'booking-step2'},appt(fl));
+    Object.assign(data,{fullName:data.fullName||fl.contact.fullName||'',phone:data.phone||fl.contact.phone||'',email:data.email||fl.contact.email||''},fl.addr||{},{source:'booking-step2',page_url:location.href},appt(fl));
     data.state=(data.state||'FL').toUpperCase();
     const btn=f.querySelector('button[type=submit]'); if(btn){btn.disabled=true;btn.textContent='Sending…';}
     try{ await bkPost(data); }
@@ -1021,7 +1063,7 @@ function mountFlow(root,opts){
   setStep(fl,'gate');
   flows.push(fl); return fl;
 }
-function resetFlow(fl){ const i=flows.indexOf(fl); if(i>-1) flows.splice(i,1); return mountFlow(fl.root,fl.opts); }
+function resetFlow(fl){ if(fl.partial) fl.partial.stop(); const i=flows.indexOf(fl); if(i>-1) flows.splice(i,1); return mountFlow(fl.root,fl.opts); }
 window.addEventListener('message',e=>{
   const d=e.data; if(!Array.isArray(d)) return;
   const fl=flows.find(f=>f.iframe.contentWindow===e.source);
@@ -1036,7 +1078,7 @@ window.addEventListener('message',e=>{
 window.addEventListener('pagehide',()=>flows.forEach(flushAddr));
 
 /* Modal (every .js-book CTA, /#book, ?book=1) */
-const MODAL_TITLES={gate:['Book your free on-site assessment','First, where is the project? Then pick a day and time that works for you.'],cal:['Pick a day and time','You will get a confirmation by text and email.'],step2:['Almost done','Your time is reserved. A few quick details so we arrive prepared.']};
+const MODAL_TITLES={gate:['Book your free on-site assessment','Your details and the jobsite first, then pick a day and time that works for you.'],cal:['Pick a day and time','You will get a confirmation by text and email.'],step2:['Almost done','Your time is reserved. A few quick details so we arrive prepared.']};
 let modalFlow=mountFlow(bkbox.querySelector('.bkflowhost'),{source:'modal',onStep:(fl,st)=>{const t=MODAL_TITLES[st];bkbox.querySelector('.bkhead h3').textContent=t[0];bkbox.querySelector('.bkhead .note').textContent=t[1];},onDone:()=>closeBook()});
 function openBook(){
   bkmodal.classList.add('open');
@@ -1049,6 +1091,7 @@ function closeBook(){
   bkmodal.classList.remove('open');
   bkmodal.setAttribute('aria-hidden','true');
   document.body.classList.remove('bklock');
+  if(modalFlow.partial) modalFlow.partial.flush();
   flushAddr(modalFlow);
   /* once a booking is complete (details step reached) the next open starts fresh at the address step */
   if(modalFlow.done||modalFlow.step==='step2') modalFlow=resetFlow(modalFlow);
@@ -1064,12 +1107,15 @@ window.addEventListener('hashchange',()=>{if(location.hash==='#book')openBook();
 let pageFlow=mountFlow(document.querySelector('#booking .bkflowhost'),{source:'page',onDone:fl=>{pageFlow=resetFlow(fl);}});
 
 /* Quote form: full jobsite address is required here, so after the lead is sent the calendar shows inline as step 2 */
+const quotePartial=bkPartial(document.getElementById('quote'),'website-quote-form');
 document.getElementById('quote').addEventListener('submit',async function(e){
   e.preventDefault();
   const f=this;
   if(!f.reportValidity()) return;
+  quotePartial.stop();
   const data=Object.fromEntries(new FormData(f).entries());
   data.state=(data.state||'FL').toUpperCase();
+  data.source='website-quote-form'; data.page_url=location.href;
   const btn=f.querySelector('button[type=submit]'); if(btn){btn.disabled=true;btn.textContent='Sending…';}
   let sent=false;
   try{ sent=await bkPost(data); }

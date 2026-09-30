@@ -6,10 +6,10 @@ URL=sys.argv[1] if len(sys.argv)>1 else "http://127.0.0.1:8766/index.html"
 WIDGET="pxL4fqAorvOoHVxhRaY9"
 results=[]
 def ok(name,cond,extra=""): results.append((name,bool(cond),extra)); print(("PASS " if cond else "FAIL ")+name+(" | "+extra if extra else ""))
-ADDR={"street":"123 Palm Avenue","city":"Coral Gables","zip":"33134"}
+GATE={"fullName":"Test Booker","phone":"(305) 555-0100","email":"test@example.com","street":"123 Palm Avenue","city":"Coral Gables","zip":"33134"}
 
 async def fill_gate(page, root):
-    for k,v in ADDR.items(): await page.fill(f"{root} .bkgate input[name={k}]", v)
+    for k,v in GATE.items(): await page.fill(f"{root} .bkgate input[name={k}]", v)
     await page.click(f"{root} .bkgate button[type=submit]")
 
 async def widget_ready(page, root):
@@ -51,17 +51,22 @@ async def main():
         ok("embed script loaded", await page.evaluate("!!Array.from(document.scripts).find(s=>s.src.includes('form_embed.js'))"))
         ok("modal hidden on load", not await page.is_visible("#bkmodal"))
         await page.click("a.navbook")
-        ok("nav Book Online opens modal on the ADDRESS step", await page.is_visible("#bkmodal .bkgate") and await page.evaluate("document.querySelector('#bkmodal .bkflow').classList.contains('s-gate')"))
+        ok("nav Book Online opens modal on the YOUR INFO step", await page.is_visible("#bkmodal .bkgate") and await page.evaluate("document.querySelector('#bkmodal .bkflow').classList.contains('s-gate')"))
         ok("calendar iframe not loaded before the address is given", (await page.get_attribute("#bkmodal iframe","src")) in (None,""))
         await page.screenshot(path=f"{SP}/t1-desktop-gate.png")
         await page.click("#bkmodal .bkgate button[type=submit]"); await page.wait_for_timeout(200)
-        ok("empty address blocked (still on address step)", await page.evaluate("document.querySelector('#bkmodal .bkflow').classList.contains('s-gate')"))
+        ok("empty step 1 blocked (still on step 1)", await page.evaluate("document.querySelector('#bkmodal .bkflow').classList.contains('s-gate')"))
         await page.fill("#bkmodal .bkgate input[name=street]","123 Palm Avenue"); await page.fill("#bkmodal .bkgate input[name=city]","Coral Gables")
         await page.click("#bkmodal .bkgate button[type=submit]"); await page.wait_for_timeout(200)
         ok("missing zip blocked", await page.evaluate("document.querySelector('#bkmodal .bkflow').classList.contains('s-gate')"))
-        await page.fill("#bkmodal .bkgate input[name=zip]","33134"); await page.click("#bkmodal .bkgate button[type=submit]")
-        ok("full address -> calendar step", await page.evaluate("document.querySelector('#bkmodal .bkflow').classList.contains('s-cal')"))
-        src=await page.get_attribute("#bkmodal iframe","src"); ok("iframe src set to GHL widget", src and WIDGET in src, src)
+        await page.fill("#bkmodal .bkgate input[name=zip]","33134"); await page.click("#bkmodal .bkgate button[type=submit]"); await page.wait_for_timeout(200)
+        ok("missing contact blocked (name/phone/email required on step 1)", await page.evaluate("document.querySelector('#bkmodal .bkflow').classList.contains('s-gate')") and not hits)
+        for k in ("fullName","phone","email"): await page.fill(f"#bkmodal .bkgate input[name={k}]", GATE[k])
+        await page.click("#bkmodal .bkgate button[type=submit]"); await page.wait_for_timeout(300)
+        ok("full step 1 -> calendar step", await page.evaluate("document.querySelector('#bkmodal .bkflow').classList.contains('s-cal')"))
+        g=hits[0] if hits else {}
+        ok("step 1 posts contact + address to the webhook (source website-booking-start)", len(hits)==1 and g.get("source")=="website-booking-start" and g.get("fullName")=="Test Booker" and g.get("phone")=="(305) 555-0100" and g.get("email")=="test@example.com" and g.get("street")=="123 Palm Avenue" and g.get("zip")=="33134" and g.get("state")=="FL" and g.get("page_url","").startswith("http"), json.dumps(g)[:220])
+        src=await page.get_attribute("#bkmodal iframe","src"); ok("iframe src set to GHL widget and prefilled from step 1", src and WIDGET in src and "first_name=Test" in src and "last_name=Booker" in src and "email=test%40example.com" in src and "phone=" in src, src)
         await widget_ready(page,"#bkmodal")
         h=await iframe_h(page,"#bkmodal iframe")
         ok("iframe resized to widget content (was stuck at 640)", h>800, f"{h}px")
@@ -92,7 +97,7 @@ async def main():
         await page.evaluate("document.querySelector('#booking').scrollIntoView()"); await page.wait_for_timeout(300)
         await page.screenshot(path=f"{SP}/t3-desktop-section-calendar.png")
         # ---------- QUOTE FORM (address split + required) ----------
-        await page.goto(URL, wait_until="load")
+        await page.goto(URL, wait_until="load"); hits.clear()
         names=await page.evaluate("Array.from(document.querySelectorAll('#quote [name]')).map(i=>i.name)")
         ok("quote form has street/city/state/zip", all(k in names for k in ("street","city","state","zip")), str(names))
         ok("quote address fields are required", await page.evaluate("['street','city','state','zip'].every(k=>document.querySelector('#quote [name='+k+']').required)"))
@@ -106,7 +111,7 @@ async def main():
         await page.click("#quote button[type=submit]")
         await page.wait_for_selector("#quote .bkinline iframe", timeout=8000)
         d=hits[0] if hits else {}
-        ok("webhook payload has split address", d.get("street")=="123 Palm Avenue" and d.get("city")=="Coral Gables" and d.get("state")=="FL" and d.get("zip")=="33134" and d.get("fullName")=="Test Booking Flow", json.dumps(d)[:200])
+        ok("webhook payload has split address + source", d.get("street")=="123 Palm Avenue" and d.get("city")=="Coral Gables" and d.get("state")=="FL" and d.get("zip")=="33134" and d.get("fullName")=="Test Booking Flow" and d.get("source")=="website-quote-form" and "partial" not in d and d.get("page_url","").startswith("http"), json.dumps(d)[:220])
         isrc=await page.get_attribute("#quote .bkinline iframe","src")
         ok("inline calendar prefilled from form", isrc and all(k in isrc for k in ("first_name=Test","last_name=Booking+Flow","email=test%40example.com","phone=")), isrc)
         await widget_ready(page,"#quote .bkinline"); h=await iframe_h(page,"#quote .bkinline iframe")
@@ -118,9 +123,10 @@ async def main():
         # ---------- MOBILE ----------
         ctx=await b.new_context(viewport={"width":390,"height":844}, is_mobile=True, has_touch=True, timezone_id="America/New_York")
         page=await ctx.new_page(); page.on("pageerror", lambda e: errors.append(str(e)))
+        await page.route("**/services.leadconnectorhq.com/hooks/**", mock)
         await page.goto(URL, wait_until="load")
         await page.click(".mbar .mquote")
-        ok("[mobile] sticky bar opens modal at address step", await page.is_visible("#bkmodal .bkgate"))
+        ok("[mobile] sticky bar opens modal at step 1", await page.is_visible("#bkmodal .bkgate"))
         await page.screenshot(path=f"{SP}/t4-mobile-gate.png")
         await fill_gate(page,"#bkmodal"); await widget_ready(page,"#bkmodal")
         h=await iframe_h(page,"#bkmodal iframe"); ok("[mobile] calendar iframe resized", h>700, f"{h}px")

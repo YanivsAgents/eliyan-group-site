@@ -1,21 +1,36 @@
 # Booking integration tests (Playwright, Python)
 
 The site embeds the GoHighLevel booking calendar `pxL4fqAorvOoHVxhRaY9` in a three-step
-flow: **1. jobsite address (required) -> 2. calendar -> 3. project details**. The flow is
-mounted from `<template id="bkflow-tpl">` in two places: the modal (every `.js-book` CTA,
-`/#book`, `/?book=1`) and the on-page `#booking` section. The hero quote form collects the
-full address itself (street / city / state / zip, all required) and then shows the calendar
-inline. The address is posted to the GHL webhook together with the booking: with the details
-form (`source: booking-step2`), or on its own if the visitor skips or closes (`source:
-booking-address`, one post per booking).
+flow: **1. your info + jobsite address (all required) -> 2. calendar -> 3. project details**. The
+flow is mounted from `<template id="bkflow-tpl">` in two places: the modal (every `.js-book` CTA,
+`/#book`, `/?book=1`) and the on-page `#booking` section. The hero quote form collects contact +
+full address itself and then shows the calendar inline.
+
+## When a lead reaches the GHL webhook ("never lose a lead", 2026-09-30)
+
+Every post carries `source` and `page_url`. GHL upserts by email/phone, so one visitor can post
+several times and lands on one contact.
+
+| Moment | `source` | Extra keys |
+|---|---|---|
+| Hero quote form submitted | `website-quote-form` | all form fields |
+| Booking step 1 "Continue to pick a time" | `website-booking-start` | fullName, phone, email, street, city, state, zip |
+| Details form after a booking | `booking-step2` | + service, type, timeline, details, sms_consent, appointment_start/end |
+| Booked, then "Skip" or close without details | `booking-address` | contact + address + appointment_start/end |
+| **Typed but never submitted** (hero form or step 1) | `website-quote-form-partial` / `website-booking-start-partial` | `partial:"true"` + whatever was filled |
+
+Partial capture (`bkPartial()` in index.html) arms once the form holds a 10-digit phone or an
+email. It posts 20 s after the last keystroke, when focus leaves the form, when the modal closes,
+and on `pagehide` / tab hidden (keepalive). It re-posts only when the content changed and stops
+for good once the form is really submitted. Disclosed in `/privacy` §01.
 
 ## Run
 
 ```bash
 cd clients/jon-amram/website
 python3 -m http.server 8766 --bind 127.0.0.1 --directory "$PWD" &
-python3 tests/test_booking.py                      # real widget: gate, resize/scroll, click-through to 'Schedule meeting', quote form, section, mobile (36 checks)
-python3 tests/test_step2.py                        # replayed widget messages: details step, payloads, skip/close, manual, section (34 checks)
+python3 tests/test_booking.py                      # real widget: step 1 (contact+address, posts, prefill), resize/scroll, click-through to 'Schedule meeting', quote form, section, mobile
+python3 tests/test_step2.py                        # replayed widget messages: step-1 post, details step, payloads, skip/close, manual, section, partial capture
 python3 tests/test_booking.py https://www.eliyangroup.com/
 python3 tests/test_step2.py   https://www.eliyangroup.com/ live
 ```
